@@ -28,7 +28,7 @@ function char (c) {
 }
 
 function needsEncapsulation (string) {
-  return string.toString().indexOf(char(CSV.DELIMITER)) >= 0;
+  return string!==null && string.toString().indexOf(char(CSV.DELIMITER)) >= 0;
 }
 
 function encapsulate (string, wrapperChar) {
