@@ -26,16 +26,18 @@ function char (c) {
 }
 
 function needsEncapsulation (string) {
-  return 'string' == typeof string && string.toString().indexOf(char(CSV.DELIMITER)) >= 0;
+  return !!string && (
+          string.toString().indexOf(char(CSV.DELIMITER)) >= 0 ||
+          string.toString().indexOf(char(CSV.CHAR_RETURN)) >= 0 ||
+          string.toString().indexOf(char(CSV.CHAR_NEWLINE)) >= 0 ||
+          string.toString().indexOf(char(CSV.CHAR_ENCAPSULATE)) >= 0
+        );
 }
 
-function encapsulate (string, wrapperChar) {
-  var replaceWith = '\\' + wrapperChar;
-  var escapedValue = (
-    string
-    .toString()
-    .replace(new RegExp(wrapperChar, 'g'), replaceWith)
-  );
+function encapsulate (string) {
+  var wrapperChar = char(CSV.CHAR_ENCAPSULATE)
+    , replaceWith = "\\" + char(CSV.CHAR_ENCAPSULATE)
+    , escapedValue = string.toString().replace(new RegExp(wrapperChar, 'g'), replaceWith);
 
   return wrapperChar + escapedValue + wrapperChar;
 }
@@ -70,7 +72,7 @@ function CSV (objects, opts) {
 
           if (lbuf.length) lbuf.push(char(CSV.DELIMITER));
           object[header] = needsEncapsulation(object[header])
-            ? encapsulate(object[header], char(CSV.CHAR_ENCAPSULATE))
+            ? encapsulate(object[header])
             : object[header];
 
             lbuf.push(object[header]);
