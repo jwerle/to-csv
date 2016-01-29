@@ -83,6 +83,6 @@ function CSV (objects, opts) {
       }
 
       return false !== opts.headers
-        ? [].concat(headers.join(','), char(CSV.CHAR_NEWLINE)).concat(buf).filter(Boolean).join('')
+        ? [].concat(headers.join(char(CSV.DELIMITER)), char(CSV.CHAR_NEWLINE)).concat(buf).filter(Boolean).join('')
         : buf.filter(Boolean).join('');
 }
