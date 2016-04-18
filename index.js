@@ -46,7 +46,7 @@ function encapsulate (string) {
  * Parses an array of objects to a CSV output
  */
 
-module.exports = CSV;
+try { module.exports = CSV; } catch(e) {}
 function CSV (objects, opts) {
   if ('object' !== typeof objects) throw new TypeError("expecting an array");
 
